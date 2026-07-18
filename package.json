@@ -1,0 +1,29 @@
+{
+  "name": "refract",
+  "productName": "Refract",
+  "version": "0.1.0",
+  "description": "A desktop web browser with a real refractive glass chrome, built on Electron/Chromium.",
+  "main": "src/main/main.js",
+  "author": "Refract",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "devDependencies": {
+    "electron": "^32.0.0",
+    "electron-builder": "^25.0.0"
+  },
+  "build": {
+    "appId": "com.refract.browser",
+    "productName": "Refract",
+    "win": {
+      "target": "nsis"
+    },
+    "files": [
+      "src/**/*",
+      "package.json"
+    ]
+  }
+}

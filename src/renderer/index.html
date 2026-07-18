@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';"
+    />
+    <title>Refract</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div id="chrome-root">
+      <canvas id="glass-canvas"></canvas>
+
+      <div class="row tab-row glass-panel" id="tab-row">
+        <div class="tabs" id="tabs-container"></div>
+        <button id="new-tab-btn" class="glass-btn" title="New tab" aria-label="New tab">+</button>
+        <div class="drag-spacer"></div>
+        <div class="window-controls">
+          <button id="min-btn" class="glass-btn win-btn" title="Minimize" aria-label="Minimize">
+            <svg viewBox="0 0 10 10"><path d="M1 5H9" /></svg>
+          </button>
+          <button id="max-btn" class="glass-btn win-btn" title="Maximize" aria-label="Maximize">
+            <svg viewBox="0 0 10 10"><rect x="1.5" y="1.5" width="7" height="7" /></svg>
+          </button>
+          <button id="close-btn" class="glass-btn win-btn win-close" title="Close" aria-label="Close">
+            <svg viewBox="0 0 10 10"><path d="M1 1L9 9M9 1L1 9" /></svg>
+          </button>
+        </div>
+      </div>
+
+      <div class="row address-row glass-panel" id="address-row">
+        <button id="back-btn" class="glass-btn nav-btn" title="Back" aria-label="Back">
+          <svg viewBox="0 0 10 10"><path d="M6.5 1.5L2.5 5L6.5 8.5" /></svg>
+        </button>
+        <button id="fwd-btn" class="glass-btn nav-btn" title="Forward" aria-label="Forward">
+          <svg viewBox="0 0 10 10"><path d="M3.5 1.5L7.5 5L3.5 8.5" /></svg>
+        </button>
+        <button id="reload-btn" class="glass-btn nav-btn" title="Reload" aria-label="Reload">
+          <svg viewBox="0 0 10 10"><path d="M8.5 5A3.5 3.5 0 1 1 6.9 2.1M8.5 1.5v2.6H5.9" /></svg>
+        </button>
+        <div class="address-field glass-inset">
+          <input id="address-input" type="text" spellcheck="false" autocomplete="off" placeholder="Search or enter address" />
+        </div>
+      </div>
+    </div>
+    <script src="glass.js"></script>
+    <script src="renderer.js"></script>
+  </body>
+</html>
