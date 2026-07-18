@@ -5,10 +5,12 @@
   --glass-fill: rgba(255, 255, 255, 0.07);
   --glass-fill-strong: rgba(255, 255, 255, 0.14);
   --glass-border: rgba(255, 255, 255, 0.16);
-  --glass-border-top: rgba(255, 255, 255, 0.38);
+  --glass-border-top: rgba(255, 255, 255, 0.55);
   --text-color: rgba(245, 246, 250, 0.92);
   --text-dim: rgba(245, 246, 250, 0.55);
   --accent: rgba(120, 170, 255, 0.55);
+  --icon-color: rgba(255, 255, 255, 0.85);
+  --icon-shadow: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.35));
 }
 
 * {
@@ -56,14 +58,18 @@ body {
   background: var(--glass-fill);
   backdrop-filter: blur(20px) saturate(150%);
   -webkit-backdrop-filter: blur(20px) saturate(150%);
-  box-shadow: inset 0 0 0 1px var(--glass-border), inset 0 1px 0 0 var(--glass-border-top);
+  box-shadow: inset 0 0 0 1px var(--glass-border);
 }
 
+/* Crisp outer edges for the whole chrome slab: a bright top line where it
+   meets the window/desktop, and a bright bottom line where it meets the
+   page — reads as a defined boundary rather than a soft blur fade. */
 .tab-row {
   height: var(--tab-row-height);
   padding: 0 8px;
   gap: 6px;
   -webkit-app-region: drag;
+  box-shadow: inset 0 0 0 1px var(--glass-border), inset 0 2px 0 0 var(--glass-border-top);
 }
 
 .address-row {
@@ -72,6 +78,7 @@ body {
   gap: 8px;
   -webkit-app-region: drag;
   border-top: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: inset 0 0 0 1px var(--glass-border), inset 0 -2px 0 0 var(--glass-border-top);
 }
 
 .tabs {
@@ -92,20 +99,22 @@ body {
   min-width: 90px;
   padding: 0 8px 0 10px;
   border-radius: 8px;
-  background: transparent;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1.5px solid rgba(255, 255, 255, 0.26);
   color: var(--text-dim);
   cursor: default;
-  transition: background 120ms ease, color 120ms ease;
+  transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
 }
 
 .tab:hover {
-  background: rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.42);
 }
 
 .tab.active {
   background: var(--glass-fill-strong);
+  border-color: rgba(255, 255, 255, 0.6);
   color: var(--text-color);
-  box-shadow: inset 0 0 0 1px var(--glass-border), inset 0 1px 0 0 var(--glass-border-top);
 }
 
 .tab .tab-title {
@@ -171,25 +180,29 @@ body {
   -webkit-app-region: no-drag;
 }
 
+/* Every chrome button gets its own glass "pill" — a background + border
+   distinct from the shared chrome glass — so it reads as a control against
+   any page content behind it, not just a bare icon floating on the blur. */
 .glass-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border: none;
-  background: transparent;
-  color: var(--text-color);
+  border: 1.5px solid rgba(255, 255, 255, 0.45);
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--icon-color);
   border-radius: 7px;
   cursor: default;
-  transition: background 120ms ease;
+  transition: background 120ms ease, border-color 120ms ease;
   -webkit-app-region: no-drag;
 }
 
 .glass-btn:hover {
-  background: rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.18);
+  border-color: rgba(255, 255, 255, 0.6);
 }
 
 .glass-btn:active {
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.26);
 }
 
 #new-tab-btn {
@@ -197,6 +210,7 @@ body {
   height: 26px;
   font-size: 16px;
   font-weight: 300;
+  filter: var(--icon-shadow);
 }
 
 .win-btn {
@@ -209,12 +223,14 @@ body {
   width: 10px;
   height: 10px;
   fill: none;
-  stroke: var(--text-color);
-  stroke-width: 1;
+  stroke: var(--icon-color);
+  stroke-width: 1.25;
+  filter: var(--icon-shadow);
 }
 
 .win-close:hover {
   background: rgba(232, 77, 66, 0.85);
+  border-color: rgba(255, 255, 255, 0.7);
 }
 
 .win-close:hover svg {
@@ -231,10 +247,11 @@ body {
   width: 11px;
   height: 11px;
   fill: none;
-  stroke: var(--text-color);
-  stroke-width: 1.4;
+  stroke: var(--icon-color);
+  stroke-width: 1.6;
   stroke-linecap: round;
   stroke-linejoin: round;
+  filter: var(--icon-shadow);
 }
 
 .nav-btn:disabled {

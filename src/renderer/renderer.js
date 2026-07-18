@@ -49,7 +49,8 @@
 
     const active = state.tabs.find((t) => t.id === state.activeTabId);
     if (active && !addressFocused) {
-      addressInput.value = active.url === 'about:blank' ? '' : active.url;
+      const isNewTabPage = active.url === 'about:blank' || active.url.endsWith('/newtab.html');
+      addressInput.value = isNewTabPage ? '' : active.url;
     }
     backBtn.disabled = !active?.canGoBack;
     fwdBtn.disabled = !active?.canGoForward;

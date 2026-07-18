@@ -1,12 +1,16 @@
 const { app, BrowserWindow, WebContentsView, ipcMain, session } = require('electron');
 const path = require('node:path');
 const os = require('node:os');
+const { pathToFileURL } = require('node:url');
 
 // Height, in CSS px, of the chrome strip (titlebar + tab bar + address bar)
 // that sits visually on top of the page content.
 const CHROME_HEIGHT = 84;
 
-const HOME_URL = 'https://www.google.com';
+// Local quick-access page shown for new tabs, built the same way
+// chromeView's own index.html is loaded (see loadFile below) but expressed
+// as a URL string since it's passed straight to webContents.loadURL.
+const HOME_URL = pathToFileURL(path.join(__dirname, '..', 'renderer', 'newtab.html')).toString();
 
 // Electron's default UA includes "Electron/x.y.z", which reads as an
 // automation signature to bot detection (e.g. Google's search challenge).
@@ -87,7 +91,12 @@ function layoutViews() {
   const [width, height] = mainWindow.getContentSize();
   chromeView.setBounds({ x: 0, y: 0, width, height: CHROME_HEIGHT });
   for (const tab of tabs.values()) {
-    tab.view.setBounds({ x: 0, y: 0, width, height });
+    tab.view.setBounds({
+      x: 0,
+      y: CHROME_HEIGHT,
+      width,
+      height: Math.max(0, height - CHROME_HEIGHT),
+    });
   }
 }
 
@@ -133,6 +142,7 @@ function createTab(url) {
   const id = nextTabId++;
   const view = new WebContentsView({
     webPreferences: {
+      preload: path.join(__dirname, 'tab-preload.js'),
       contextIsolation: true,
       nodeIntegration: false,
       sandbox: true,
@@ -210,9 +220,15 @@ function activeTab() {
   return activeTabId ? tabs.get(activeTabId) : null;
 }
 
-// --- Periodic capture of the page pixels sitting directly beneath the glass
+// --- Periodic capture of the page content immediately below the glass
 // chrome, streamed to the renderer as a texture for the WebGL refraction
-// layer. This is a real screenshot of live content, not a synthetic blur.
+// layer. The tab view no longer renders underneath the chrome (see
+// layoutViews), so there's nothing truly "hidden" left to sample — instead
+// this captures the tab's own top strip (y:0 in the tab view's local
+// coordinate space, which is CHROME_HEIGHT in window space, i.e. the strip
+// of visible page immediately below the chrome bar) as a stand-in source
+// for the lensing effect. This is a real screenshot of live, adjacent
+// content, not a synthetic blur.
 function startFrameCapture() {
   stopFrameCapture();
   frameCaptureTimer = setInterval(async () => {

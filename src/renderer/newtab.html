@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self';"
+    />
+    <title>New Tab</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="newtab.css" />
+  </head>
+  <body class="newtab-page">
+    <div class="newtab-wrap">
+      <div class="newtab-logo">Refract</div>
+
+      <form id="newtab-search-form" class="newtab-search glass-panel">
+        <svg class="newtab-search-icon" viewBox="0 0 20 20">
+          <circle cx="8.5" cy="8.5" r="6" />
+          <path d="M13 13L18 18" />
+        </svg>
+        <input
+          id="newtab-search-input"
+          type="text"
+          spellcheck="false"
+          autocomplete="off"
+          autofocus
+          placeholder="Search Google or type a URL"
+        />
+      </form>
+
+      <div class="newtab-tiles">
+        <button class="newtab-tile glass-panel" data-url="https://github.com">
+          <span class="newtab-tile-icon" style="background: #24292e">GH</span>
+          <span class="newtab-tile-label">GitHub</span>
+        </button>
+        <button class="newtab-tile glass-panel" data-url="https://claude.ai">
+          <span class="newtab-tile-icon" style="background: #cc785c">C</span>
+          <span class="newtab-tile-label">Claude</span>
+        </button>
+        <button class="newtab-tile glass-panel" data-url="https://supabase.com/dashboard">
+          <span class="newtab-tile-icon" style="background: #3ecf8e">S</span>
+          <span class="newtab-tile-label">Supabase</span>
+        </button>
+        <button class="newtab-tile glass-panel" data-url="https://mail.google.com">
+          <span class="newtab-tile-icon" style="background: #ea4335">M</span>
+          <span class="newtab-tile-label">Gmail</span>
+        </button>
+        <button class="newtab-tile glass-panel" data-url="https://youtube.com">
+          <span class="newtab-tile-icon" style="background: #ff0000">▶</span>
+          <span class="newtab-tile-label">YouTube</span>
+        </button>
+      </div>
+    </div>
+    <script src="newtab.js"></script>
+  </body>
+</html>
