@@ -8,6 +8,12 @@ const CHROME_HEIGHT = 84;
 
 const HOME_URL = 'https://www.google.com';
 
+// Electron's default UA includes "Electron/x.y.z", which reads as an
+// automation signature to bot detection (e.g. Google's search challenge).
+// Present as a normal Chrome UA instead, built from the Chromium version
+// this Electron release actually ships so it can't silently go stale.
+const CHROME_UA = `Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/${process.versions.chrome} Safari/537.36`;
+
 /** @type {BrowserWindow} */
 let mainWindow;
 /** @type {WebContentsView} */
@@ -137,6 +143,7 @@ function createTab(url) {
   tabs.set(id, tab);
 
   const wc = view.webContents;
+  wc.setUserAgent(CHROME_UA);
   wc.on('page-title-updated', (_e, title) => {
     tab.title = title;
     broadcastTabs();
@@ -275,6 +282,7 @@ ipcMain.handle('nav:reload', () => activeTab()?.view.webContents.reload());
 
 app.whenReady().then(() => {
   session.defaultSession.setPermissionRequestHandler((_wc, _permission, callback) => callback(false));
+  session.defaultSession.setUserAgent(CHROME_UA);
   createWindow();
   startFrameCapture();
 
